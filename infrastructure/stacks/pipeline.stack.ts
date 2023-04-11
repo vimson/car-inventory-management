@@ -17,8 +17,8 @@ export class PipelineStack extends cdk.Stack {
     super(scope, stackId, props);
     this.contextVars = contextVars;
 
-    const deploymentBranch = this.contextVars.environment === 'Production' ? 'master' : 'dev';
-    const repo = codecommit.Repository.fromRepositoryName(this, 'CdkDemoRepo', 'cdk-demo');
+    const deploymentBranch = this.contextVars.environment === 'Production' ? 'master' : 'stage';
+    const repo = codecommit.Repository.fromRepositoryName(this, 'CdkDemoRepo', 'dealer-demo');
     const pipeline = new CodePipeline(this, stackId, {
       pipelineName: stackId,
       codeBuildDefaults: {
