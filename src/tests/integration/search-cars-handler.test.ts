@@ -83,7 +83,7 @@ describe('Dealers - Cars manager', () => {
     const searchParams: CarSearchParams = {
       registeredAfter: '2022-06-01',
       registeredBefore: '2022-06-01',
-      sortBy: 'desc',
+      sortBy: 'asc',
       limit: 25,
     };
     carSearchEvent.queryStringParameters =

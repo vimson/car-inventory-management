@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1681321816065" clover="3.2.0">
-  <project timestamp="1681321816065" name="All files">
-    <metrics statements="186" coveredstatements="180" conditionals="51" coveredconditionals="44" methods="38" coveredmethods="34" elements="275" coveredelements="258" complexity="0" loc="186" ncloc="186" packages="10" files="10" classes="10"/>
+<coverage generated="1681323062525" clover="3.2.0">
+  <project timestamp="1681323062525" name="All files">
+    <metrics statements="182" coveredstatements="182" conditionals="48" coveredconditionals="45" methods="36" coveredmethods="34" elements="266" coveredelements="261" complexity="0" loc="182" ncloc="182" packages="10" files="10" classes="10"/>
     <package name="entities">
       <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="car.entity.ts" path="/Users/mac/References/click-dealer/src/entities/car.entity.ts">
@@ -106,9 +106,9 @@
       </file>
     </package>
     <package name="repositories">
-      <metrics statements="56" coveredstatements="56" conditionals="23" coveredconditionals="21" methods="9" coveredmethods="9"/>
+      <metrics statements="56" coveredstatements="56" conditionals="23" coveredconditionals="22" methods="9" coveredmethods="9"/>
       <file name="cars.repo.ts" path="/Users/mac/References/click-dealer/src/repositories/cars.repo.ts">
-        <metrics statements="56" coveredstatements="56" conditionals="23" coveredconditionals="21" methods="9" coveredmethods="9"/>
+        <metrics statements="56" coveredstatements="56" conditionals="23" coveredconditionals="22" methods="9" coveredmethods="9"/>
         <line num="1" count="5" type="stmt"/>
         <line num="2" count="5" type="stmt"/>
         <line num="11" count="5" type="stmt"/>
@@ -132,9 +132,9 @@
         <line num="70" count="6" type="stmt"/>
         <line num="71" count="6" type="cond" truecount="1" falsecount="0"/>
         <line num="72" count="6" type="stmt"/>
-        <line num="73" count="92" type="stmt"/>
+        <line num="73" count="97" type="stmt"/>
         <line num="76" count="6" type="cond" truecount="1" falsecount="0"/>
-        <line num="77" count="2" type="stmt"/>
+        <line num="77" count="3" type="stmt"/>
         <line num="81" count="6" type="stmt"/>
         <line num="85" count="6" type="stmt"/>
         <line num="89" count="6" type="stmt"/>
@@ -168,38 +168,34 @@
       </file>
     </package>
     <package name="repositories.base">
-      <metrics statements="29" coveredstatements="24" conditionals="8" coveredconditionals="4" methods="15" coveredmethods="11"/>
+      <metrics statements="25" coveredstatements="25" conditionals="5" coveredconditionals="4" methods="13" coveredmethods="11"/>
       <file name="dynamodb.base.repo.ts" path="/Users/mac/References/click-dealer/src/repositories/base/dynamodb.base.repo.ts">
-        <metrics statements="29" coveredstatements="24" conditionals="8" coveredconditionals="4" methods="15" coveredmethods="11"/>
+        <metrics statements="25" coveredstatements="25" conditionals="5" coveredconditionals="4" methods="13" coveredmethods="11"/>
         <line num="1" count="5" type="stmt"/>
         <line num="2" count="5" type="stmt"/>
-        <line num="21" count="5" type="stmt"/>
-        <line num="24" count="5" type="stmt"/>
-        <line num="33" count="5" type="stmt"/>
-        <line num="37" count="4" type="stmt"/>
-        <line num="41" count="4" type="stmt"/>
-        <line num="45" count="0" type="stmt"/>
-        <line num="50" count="0" type="stmt"/>
-        <line num="54" count="6" type="stmt"/>
-        <line num="55" count="6" type="stmt"/>
-        <line num="59" count="12" type="stmt"/>
-        <line num="66" count="12" type="stmt"/>
-        <line num="67" count="12" type="cond" truecount="2" falsecount="0"/>
-        <line num="71" count="0" type="stmt"/>
-        <line num="85" count="0" type="stmt"/>
-        <line num="86" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="90" count="1" type="stmt"/>
-        <line num="98" count="1" type="stmt"/>
-        <line num="99" count="1" type="stmt"/>
-        <line num="103" count="1" type="stmt"/>
-        <line num="106" count="2" type="stmt"/>
-        <line num="109" count="2" type="stmt"/>
-        <line num="117" count="2" type="stmt"/>
-        <line num="131" count="1" type="stmt"/>
-        <line num="134" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="138" count="4" type="stmt"/>
-        <line num="142" count="5" type="stmt"/>
-        <line num="144" count="97" type="stmt"/>
+        <line num="20" count="5" type="stmt"/>
+        <line num="24" count="5" type="cond" truecount="1" falsecount="0"/>
+        <line num="25" count="5" type="stmt"/>
+        <line num="32" count="5" type="stmt"/>
+        <line num="36" count="4" type="stmt"/>
+        <line num="40" count="4" type="stmt"/>
+        <line num="44" count="6" type="stmt"/>
+        <line num="45" count="6" type="stmt"/>
+        <line num="49" count="12" type="stmt"/>
+        <line num="56" count="12" type="stmt"/>
+        <line num="57" count="12" type="cond" truecount="2" falsecount="0"/>
+        <line num="61" count="1" type="stmt"/>
+        <line num="69" count="1" type="stmt"/>
+        <line num="70" count="1" type="stmt"/>
+        <line num="74" count="1" type="stmt"/>
+        <line num="77" count="2" type="stmt"/>
+        <line num="80" count="2" type="stmt"/>
+        <line num="88" count="2" type="stmt"/>
+        <line num="102" count="1" type="stmt"/>
+        <line num="105" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="109" count="4" type="stmt"/>
+        <line num="113" count="5" type="stmt"/>
+        <line num="115" count="102" type="stmt"/>
       </file>
     </package>
     <package name="tests.data">
@@ -237,14 +233,14 @@
       </file>
     </package>
     <package name="utils">
-      <metrics statements="6" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+      <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
       <file name="generic.utils.ts" path="/Users/mac/References/click-dealer/src/utils/generic.utils.ts">
-        <metrics statements="6" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
-        <line num="3" count="5" type="stmt"/>
-        <line num="4" count="13" type="stmt"/>
-        <line num="5" count="13" type="stmt"/>
-        <line num="7" count="0" type="stmt"/>
-        <line num="11" count="5" type="stmt"/>
+        <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="3" count="6" type="stmt"/>
+        <line num="4" count="15" type="stmt"/>
+        <line num="5" count="15" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="11" count="6" type="stmt"/>
         <line num="15" count="14" type="stmt"/>
       </file>
     </package>
