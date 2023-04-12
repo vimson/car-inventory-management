@@ -29,6 +29,15 @@ describe('Get car from the database', () => {
     expect(response.statusCode).toEqual(404);
   });
 
+  test('Trying to do a null update with proper registration number', async () => {
+    gatewayEvent.body = '';
+    gatewayEvent.pathParameters = {
+      carId: carTestData.registerNumber,
+    };
+    const response = await updateCarHandler(gatewayEvent);
+    expect(response.statusCode).toEqual(304);
+  });
+
   test('Update status of the car with proper registration number', async () => {
     gatewayEvent.body = '{"status":"published"}';
     gatewayEvent.pathParameters = {

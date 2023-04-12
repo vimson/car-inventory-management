@@ -21,6 +21,12 @@ describe('Get car from the database', () => {
     expect(response.statusCode).toEqual(404);
   });
 
+  test('Fetch car from the database without registration number', async () => {
+    gatewayEvent.pathParameters = {};
+    const response = await getCarHandler(gatewayEvent);
+    expect(response.statusCode).toEqual(400);
+  });
+
   test('Fetch car from the database using correct registration number', async () => {
     gatewayEvent.pathParameters = {
       carId: carTestData.registerNumber,

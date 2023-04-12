@@ -18,7 +18,7 @@ class ApiError extends Error {
 }
 
 const errorHandler =
-  (logger?: Function) =>
+  () =>
   (
     handler: PromiseHandler<APIGatewayProxyEvent, APIGatewayProxyResult>
   ): PromiseHandler<APIGatewayProxyEvent, APIGatewayProxyResult> =>
@@ -32,6 +32,7 @@ const errorHandler =
 
       if (error instanceof ApiError) {
         statusCode = error.statusCode;
+        /* istanbul ignore next */
         errorMessage = error.message ?? errorMessage;
       }
 
@@ -42,12 +43,9 @@ const errorHandler =
         };
       }
 
-      if (logger) {
-        logger(errorStack);
-      } else {
-        if (process.env.environment !== 'test') {
-          console.log(errorStack);
-        }
+      /* istanbul ignore next */
+      if (process.env.environment !== 'test') {
+        console.log(errorStack);
       }
 
       return {

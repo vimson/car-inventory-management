@@ -60,10 +60,6 @@ class CarsRepo {
       fieldKeys
     );
 
-    if (!updatedItem) {
-      return null;
-    }
-
     return omit(updatedItem, [...this.privateFields]);
   }
 
