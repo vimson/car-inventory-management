@@ -17,7 +17,7 @@ import {
 jest.setTimeout(10 * 1000);
 
 describe('Dealers - Cars manager', () => {
-  test.skip('Adding batch of cars to the database', async () => {
+  test('Adding batch of cars to the database', async () => {
     for (const car of sampleCars) {
       gatewayEvent.body = JSON.stringify(car);
       const response = await createCarHandler(gatewayEvent);
@@ -25,17 +25,17 @@ describe('Dealers - Cars manager', () => {
     }
   });
 
-  test.skip('Get car from the database by registration number', async () => {
+  test('Get car from the database by registration number', async () => {
     const response = await getCarHandler(gatewayGetCarEvent);
     expect(response.statusCode).toBe(200);
   });
 
-  test.skip('Remove car from the database by registration number', async () => {
+  test('Remove car from the database by registration number', async () => {
     const response = await removeCarHandler(gatewayGetCarEvent);
     expect(response.statusCode).toBe(200);
   });
 
-  test.skip('Update car inventory in the database', async () => {
+  test('Update car inventory in the database', async () => {
     const response = await updateCarHandler(putCarGatewayEvent);
     expect(response.statusCode).toBe(200);
   });

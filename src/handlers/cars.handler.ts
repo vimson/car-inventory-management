@@ -1,5 +1,5 @@
 import { APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { errorHandler } from '../middlewares/error.middleware';
+import { errorHandler, ApiError } from '../middlewares/error.middleware';
 import {
   carRequestSchema,
   carPutRequestSchema,
@@ -10,16 +10,22 @@ import { parseJson, buildResponse } from '../utils/generic.utils';
 import { CarsFactory } from '../factories/cars.factory';
 import { carsRepo } from '../repositories/cars.repo';
 
-// Get Cars from DB
-export const cars = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
-  const searchParams: CarSearchParams | null = event.queryStringParameters;
-  carSearchSchema.parse(searchParams);
+// Create a new Car
+export const createCar = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
+  const carData = event.body ? parseJson(event.body) : {};
+  carRequestSchema.parse(carData);
+  const carEntity = CarsFactory.buildCar(carData);
+  const carExists = await carsRepo.exists(carEntity.registerNumber);
+  if (carExists) {
+    throw new ApiError('Conflict | Car already exists', 409);
+  }
 
-  const result = await carsRepo.searchcars(searchParams);
-  return buildResponse(200, result);
+  await carsRepo.saveCar(carEntity);
+  return buildResponse(201, {
+    message: 'Created | Car added to the database',
+  });
 };
-
-export const carsHandler = errorHandler()(cars);
+export const createCarHandler = errorHandler()(createCar);
 
 // Get a single car
 const getCar = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
@@ -32,29 +38,22 @@ const getCar = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> =>
 
   const car = await carsRepo.getCarByRegistrationNumber(carRegistrationNumber);
   if (!car) {
-    return buildResponse(404, { message: 'Not Found | Car not found' });
+    throw new ApiError('Not Found | Car not found', 404);
   }
 
   return buildResponse(200, car);
 };
 export const getCarHandler = errorHandler()(getCar);
 
-// Create a new Car
-export const createCar = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
-  const carData = event.body ? parseJson(event.body) : {};
-  carRequestSchema.parse(carData);
-  const carEntity = CarsFactory.buildCar(carData);
-  const carExists = await carsRepo.exists(carEntity.registerNumber);
-  if (carExists) {
-    return buildResponse(409, { message: 'Conflict | Car already exists' });
-  }
+// Get Cars from DB
+export const cars = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
+  const searchParams: CarSearchParams | null = event.queryStringParameters;
+  carSearchSchema.parse(searchParams);
 
-  await carsRepo.saveCar(carEntity);
-  return buildResponse(201, {
-    message: 'Created | Car added to the database',
-  });
+  const result = await carsRepo.searchcars(searchParams);
+  return buildResponse(200, result);
 };
-export const createCarHandler = errorHandler()(createCar);
+export const carsHandler = errorHandler()(cars);
 
 // Update an existing Car
 export const updateCar = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
@@ -64,18 +63,18 @@ export const updateCar = async (event: APIGatewayEvent): Promise<APIGatewayProxy
     : null;
 
   if (!carRegistrationNumber) {
-    return buildResponse(400, { message: 'Bad Request | Car registration number must provide' });
+    throw new ApiError('Bad Request | Car registration number must provide', 400);
   }
   carPutRequestSchema.parse(carData);
 
   const carExists = await carsRepo.exists(carRegistrationNumber);
   if (!carExists) {
-    return buildResponse(404, { message: 'Not Found | Car not found' });
+    throw new ApiError('Not Found | Car not found', 404);
   }
 
   const updatedCar = await carsRepo.updateCar(carRegistrationNumber, carData);
   if (!updatedCar) {
-    return buildResponse(304, { message: 'Nothing to update' });
+    throw new ApiError('Nothing to update', 304);
   }
 
   return buildResponse(200, updatedCar);
@@ -88,12 +87,12 @@ export const removeCar = async (event: APIGatewayEvent): Promise<APIGatewayProxy
     ? decodeURI(event.pathParameters.carId)
     : null;
   if (!carRegistrationNumber) {
-    return buildResponse(400, { message: 'Bad Request | Car registration number must provide' });
+    throw new ApiError('Bad Request | Car registration number must provide', 400);
   }
 
   const car = await carsRepo.getCarByRegistrationNumber(carRegistrationNumber);
   if (!car) {
-    return buildResponse(404, { message: 'Not Found | Car not found' });
+    throw new ApiError('Not Found | Car not found', 404);
   }
   await carsRepo.removeCarByRegistrationNumber(carRegistrationNumber);
   return buildResponse(200, { message: 'Car deleted' });

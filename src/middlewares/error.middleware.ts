@@ -6,7 +6,7 @@ type PromiseHandler<TEvent = any, TResult = any> = (
   context?: Context
 ) => Promise<TResult>;
 
-class GenericError extends Error {
+class ApiError extends Error {
   statusCode: number;
   message: string;
 
@@ -22,19 +22,15 @@ const errorHandler =
   (
     handler: PromiseHandler<APIGatewayProxyEvent, APIGatewayProxyResult>
   ): PromiseHandler<APIGatewayProxyEvent, APIGatewayProxyResult> =>
-  async (event: APIGatewayProxyEvent, context?: Context): Promise<APIGatewayProxyResult> => {
+  async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
-      if (context) {
-        return await handler(event, context);
-      } else {
-        return await handler(event);
-      }
+      return await handler(event);
     } catch (error: unknown) {
       let statusCode = 500;
       let errorMessage = 'Internal Server Error';
       const errorStack = error;
 
-      if (error instanceof GenericError) {
+      if (error instanceof ApiError) {
         statusCode = error.statusCode;
         errorMessage = error.message ?? errorMessage;
       }
@@ -49,7 +45,9 @@ const errorHandler =
       if (logger) {
         logger(errorStack);
       } else {
-        console.log(errorStack);
+        if (process.env.environment !== 'test') {
+          console.log(errorStack);
+        }
       }
 
       return {
@@ -59,4 +57,4 @@ const errorHandler =
     }
   };
 
-export { errorHandler, GenericError };
+export { errorHandler, ApiError };
