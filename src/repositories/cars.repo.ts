@@ -91,7 +91,7 @@ class CarsRepo {
       KeyConditionExpression: 'PK = :pk',
       TableName: process.env.DEALERS_TABLE,
       ScanIndexForward: parameters?.sortBy === 'asc' ? true : false,
-      Limit: parameters?.limit ? parameters.limit : 10,
+      Limit: parameters?.limit ? Number(parameters.limit) : 10,
     };
 
     if (parameters?.dealer) {

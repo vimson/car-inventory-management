@@ -41,7 +41,7 @@ const carSearchSchema = z.object({
   registeredBefore: z.string().optional(),
   createdAfter: z.coerce.date().optional(),
   createdBefore: z.coerce.date().optional(),
-  limit: z.number().lt(26).optional(),
+  limit: z.coerce.number().lt(26).optional(),
   nextPageOffset: z.string().optional(),
   sortBy: z.enum(['asc', 'desc']).optional(),
 });
