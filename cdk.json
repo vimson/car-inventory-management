@@ -33,19 +33,21 @@
     "@aws-cdk/aws-ecs:disableExplicitDeploymentControllerForCircuitBreaker": true,
     "staging-environment": {
       "stackName": "DealersStaging",
-      "ddbTableName": "DealersDev",
       "environment": "Staging",
       "account": "741829461075",
       "region": "eu-west-2",
-      "apiVersion": "v1"
+      "apiVersion": "v1",
+      "awsRegion": "eu-west-2",
+      "ddbTableName": "DealersDev"
     },
     "production-environment": {
       "stackName": "DealersProduction",
-      "ddbTableName": "Dealers",
       "environment": "Production",
       "account": "741829461075",
       "region": "eu-west-2",
-      "apiVersion": "v1"
+      "apiVersion": "v1",
+      "awsRegion": "eu-west-2",
+      "ddbTableName": "Dealers"
     }
   }
 }

@@ -8,9 +8,12 @@ class CarLambdas {
 
   private stackName: string;
 
-  constructor(stack: cdk.Stack, stackName: string) {
+  private lambdaEnvironment: Record<string, string>;
+
+  constructor(stack: cdk.Stack, stackName: string, environment: Record<string, string>) {
     this.stack = stack;
     this.stackName = stackName;
+    this.lambdaEnvironment = environment;
   }
 
   root(): NodejsFunction {
@@ -33,7 +36,7 @@ class CarLambdas {
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'carsHandler',
       entry: path.join(__dirname, `/../../src/handlers/cars.handler.ts`),
-      environment: {},
+      environment: { ...this.lambdaEnvironment },
     });
   }
 
@@ -45,7 +48,7 @@ class CarLambdas {
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'getCarHandler',
       entry: path.join(__dirname, `/../../src/handlers/cars.handler.ts`),
-      environment: {},
+      environment: { ...this.lambdaEnvironment },
     });
   }
 
@@ -57,7 +60,7 @@ class CarLambdas {
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'createCarHandler',
       entry: path.join(__dirname, `/../../src/handlers/cars.handler.ts`),
-      environment: {},
+      environment: { ...this.lambdaEnvironment },
     });
   }
 
@@ -69,7 +72,7 @@ class CarLambdas {
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'updateCarHandler',
       entry: path.join(__dirname, `/../../src/handlers/cars.handler.ts`),
-      environment: {},
+      environment: { ...this.lambdaEnvironment },
     });
   }
 
@@ -81,7 +84,7 @@ class CarLambdas {
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'removeCarHandler',
       entry: path.join(__dirname, `/../../src/handlers/cars.handler.ts`),
-      environment: {},
+      environment: { ...this.lambdaEnvironment },
     });
   }
 }

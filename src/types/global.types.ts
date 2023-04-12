@@ -5,6 +5,7 @@ type ContextVariables = {
   region: string;
   apiVersion: string;
   ddbTableName: string;
+  awsRegion: string;
 };
 
 export { ContextVariables };

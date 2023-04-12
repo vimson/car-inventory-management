@@ -73,17 +73,19 @@ export const updateCarHandler = async (
 };
 
 // Remove an existing Car
-export const removeCarHandler = async (
-  event: APIGatewayEvent,
-  context: Context
-): Promise<APIGatewayProxyResult> => {
-  console.log(`Event: ${JSON.stringify(event, null, 2)}`);
-  console.log(`Context: ${JSON.stringify(context, null, 2)}`);
+export const removeCar = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
+  const carRegistrationNumber = event?.pathParameters?.carId
+    ? decodeURI(event.pathParameters.carId)
+    : null;
+  if (!carRegistrationNumber) {
+    return buildResponse(400, { message: 'Bad Request | Car registration number must provide' });
+  }
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'remove car' + Math.random(),
-    }),
-  };
+  const car = await carsRepo.getCarByRegistrationNumber(carRegistrationNumber);
+  if (!car) {
+    return buildResponse(404, { message: 'Not Found | Car not found' });
+  }
+
+  return buildResponse(200, car);
 };
+export const removeCarHandler = errorHandler()(removeCar);
