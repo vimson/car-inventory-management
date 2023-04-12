@@ -8,6 +8,9 @@ import {
   GetItemCommand,
   QueryCommand,
   QueryCommandInput,
+  DeleteItemCommand,
+  UpdateItemCommand,
+  UpdateItemCommandOutput,
 } from '@aws-sdk/client-dynamodb';
 
 class DynamoDBRepository {
@@ -80,6 +83,54 @@ class DynamoDBRepository {
     };
     const document = await this.ddbClient.send(new QueryCommand(params));
     return document?.Items?.length ? (unmarshall(document?.Items[0]) as unknown as T) : null;
+  }
+
+  async deleteByKey(partitionKey: string, sortKey: string): Promise<boolean> {
+    const params = {
+      TableName: process.env.DEALERS_TABLE,
+      Key: marshall({
+        PK: partitionKey,
+        SK: sortKey,
+      }),
+    };
+
+    await this.ddbClient.send(new DeleteItemCommand(params));
+    return true;
+  }
+
+  async updateDocument<T>(partitionKey: string, sortKey: string, item: T, itemKeys: string[]) {
+    const params = {
+      TableName: process.env.DEALERS_TABLE,
+      UpdateExpression: `SET ${itemKeys
+        .map((k, index) => `#field${index} = :value${index}`)
+        .join(', ')}`,
+      ExpressionAttributeNames: itemKeys.reduce(
+        (accumulator, k, index) => ({
+          ...accumulator,
+          [`#field${index}`]: k,
+        }),
+        {}
+      ),
+      ExpressionAttributeValues: marshall(
+        itemKeys.reduce(
+          (accumulator, k, index) => ({
+            ...accumulator,
+            [`:value${index}`]: item[k],
+          }),
+          {}
+        )
+      ),
+      Key: marshall({
+        PK: partitionKey,
+        SK: sortKey,
+      }),
+      ReturnValues: 'ALL_NEW',
+    };
+
+    const updatedDocument: UpdateItemCommandOutput = await this.ddbClient.send(
+      new UpdateItemCommand(params)
+    );
+    return updatedDocument.Attributes ? unmarshall(updatedDocument.Attributes) : null;
   }
 
   formatToDDBEntity(entity: Record<string, any>): WriteRequest {

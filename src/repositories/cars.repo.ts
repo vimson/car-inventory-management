@@ -1,9 +1,14 @@
 import { ddbRepo } from '../repositories/base/dynamodb.base.repo';
 import { CarEntity } from '../entities/car.entity';
-import { Car } from '../types/schema.types';
+import { Car, CarPutRequest } from '../types/schema.types';
 import omit from 'lodash.omit';
 
 class CarsRepo {
+  async exists(registrationNumber: string): Promise<boolean> {
+    const document = await ddbRepo.getItemByKey<Car>('Car', registrationNumber);
+    return document ? true : false;
+  }
+
   async saveCar(car: CarEntity) {
     const ddbEntity = ddbRepo.formatToDDBEntity(
       Object.assign(
@@ -31,9 +36,29 @@ class CarsRepo {
     return omit(carDocument, ['PK', 'SK', 'LSI1_SK', 'LSI2_SK', 'LSI3_SK', 'LSI4_SK', 'LSI5_SK']);
   }
 
-  async exists(registrationNumber: string): Promise<boolean> {
-    const document = await ddbRepo.getItemByKey<Car>('Car', registrationNumber);
-    return document ? true : false;
+  async removeCarByRegistrationNumber(registrationNumber: string): Promise<boolean> {
+    return await ddbRepo.deleteByKey('Car', registrationNumber);
+  }
+
+  async updateCar(registrationNumber: string, data: CarPutRequest): Promise<Car | null> {
+    data['updatedAt'] = new Date().toISOString();
+    const fieldKeys = Object.keys(data);
+    if (fieldKeys.length === 1) {
+      return null;
+    }
+
+    const updatedItem = await ddbRepo.updateDocument<CarPutRequest>(
+      'Car',
+      registrationNumber,
+      data,
+      fieldKeys
+    );
+
+    if (!updatedItem) {
+      return null;
+    }
+
+    return omit(updatedItem, ['PK', 'SK', 'LSI1_SK', 'LSI2_SK', 'LSI3_SK', 'LSI4_SK', 'LSI5_SK']);
   }
 }
 

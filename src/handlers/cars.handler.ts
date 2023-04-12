@@ -1,25 +1,18 @@
-import { Context, APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { errorHandler } from '../middlewares/error.middleware';
-import { carRequestSchema } from '../types/schema.types';
+import { carRequestSchema, carPutRequestSchema } from '../types/schema.types';
 import { parseJson, buildResponse } from '../utils/generic.utils';
 import { CarsFactory } from '../factories/cars.factory';
 import { carsRepo } from '../repositories/cars.repo';
 
 // Get Cars from DB
-export const carsHandler = async (
-  event: APIGatewayEvent,
-  context: Context
-): Promise<APIGatewayProxyResult> => {
-  console.log(`Event: ${JSON.stringify(event, null, 2)}`);
-  console.log(`Context: ${JSON.stringify(context, null, 2)}`);
+export const cars = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
+  console.log(event.queryStringParameters);
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'Cars landing page' + Math.random(),
-    }),
-  };
+  return buildResponse(200, []);
 };
+
+export const carsHandler = errorHandler()(cars);
 
 // Get a single car
 const getCar = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
@@ -57,20 +50,30 @@ export const createCar = async (event: APIGatewayEvent): Promise<APIGatewayProxy
 export const createCarHandler = errorHandler()(createCar);
 
 // Update an existing Car
-export const updateCarHandler = async (
-  event: APIGatewayEvent,
-  context: Context
-): Promise<APIGatewayProxyResult> => {
-  console.log(`Event: ${JSON.stringify(event, null, 2)}`);
-  console.log(`Context: ${JSON.stringify(context, null, 2)}`);
+export const updateCar = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
+  const carData = event.body ? parseJson(event.body) : {};
+  const carRegistrationNumber = event?.pathParameters?.carId
+    ? decodeURI(event.pathParameters.carId)
+    : null;
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'Update car' + Math.random(),
-    }),
-  };
+  if (!carRegistrationNumber) {
+    return buildResponse(400, { message: 'Bad Request | Car registration number must provide' });
+  }
+  carPutRequestSchema.parse(carData);
+
+  const carExists = await carsRepo.exists(carRegistrationNumber);
+  if (!carExists) {
+    return buildResponse(404, { message: 'Not Found | Car not found' });
+  }
+
+  const updatedCar = await carsRepo.updateCar(carRegistrationNumber, carData);
+  if (!updatedCar) {
+    return buildResponse(304, { message: 'Nothing to update' });
+  }
+
+  return buildResponse(200, updatedCar);
 };
+export const updateCarHandler = errorHandler()(updateCar);
 
 // Remove an existing Car
 export const removeCar = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
@@ -85,7 +88,7 @@ export const removeCar = async (event: APIGatewayEvent): Promise<APIGatewayProxy
   if (!car) {
     return buildResponse(404, { message: 'Not Found | Car not found' });
   }
-
-  return buildResponse(200, car);
+  await carsRepo.removeCarByRegistrationNumber(carRegistrationNumber);
+  return buildResponse(200, { message: 'Car deleted' });
 };
 export const removeCarHandler = errorHandler()(removeCar);

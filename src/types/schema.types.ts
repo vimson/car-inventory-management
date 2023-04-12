@@ -17,7 +17,24 @@ const carRequestSchema = z.object({
   updatedAt: z.string().datetime().optional(),
 });
 
+const carPutRequestSchema = z.object({
+  dealer: z.string().optional(),
+  make: z.string().optional(),
+  model: z.string().optional(),
+  year: z.number().gt(1900).lt(2024).optional(),
+  color: z.string().optional(),
+  price: z.number().positive().optional(),
+  registerNumber: z.string().optional(),
+  mileage: z.number().positive().optional(),
+  description: z.string().optional(),
+  registeredAt: z.coerce.date().optional(),
+  status: z.enum(['draft', 'published', 'archived']).optional(),
+  updatedAt: z.string().datetime().optional(),
+});
+
 type CarPostRequest = z.infer<typeof carRequestSchema>;
+
+type CarPutRequest = z.infer<typeof carPutRequestSchema>;
 
 type Car = Required<CarPostRequest>;
 
@@ -25,6 +42,6 @@ type EnvironmentVars = {
   [key: string]: string;
 };
 
-export { CarPostRequest, Car, EnvironmentVars };
+export { CarPostRequest, CarPutRequest, Car, EnvironmentVars };
 
-export { carRequestSchema };
+export { carRequestSchema, carPutRequestSchema };

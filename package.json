@@ -9,6 +9,7 @@
     "watch": "tsc -w",
     "test": "jest",
     "test:watch": "jest --watch",
+    "test:coverage": "jest --watch --coverage",
     "cdk": "cdk",
     "lint": "eslint --ext .ts --ext .mts",
     "lintfix": "eslint --ext .ts --ext .mts --fix"

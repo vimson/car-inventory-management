@@ -19,11 +19,11 @@ class DealerApiGateway {
     const cars = this.restApi.root.addResource('cars');
     cars.addMethod('GET', new apigateway.LambdaIntegration(lambdas.cars));
     cars.addMethod('POST', new apigateway.LambdaIntegration(lambdas.createCar));
-    cars.addMethod('PUT', new apigateway.LambdaIntegration(lambdas.updateCar));
 
     const car = cars.addResource('{carId}');
     car.addMethod('GET', new apigateway.LambdaIntegration(lambdas.getCar));
     car.addMethod('DELETE', new apigateway.LambdaIntegration(lambdas.removeCar));
+    car.addMethod('PUT', new apigateway.LambdaIntegration(lambdas.updateCar));
 
     return this.restApi;
   }
