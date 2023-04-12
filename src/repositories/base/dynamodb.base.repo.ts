@@ -11,6 +11,7 @@ import {
   DeleteItemCommand,
   UpdateItemCommand,
   UpdateItemCommandOutput,
+  AttributeValue,
 } from '@aws-sdk/client-dynamodb';
 
 class DynamoDBRepository {
@@ -140,4 +141,4 @@ class DynamoDBRepository {
 
 export const ddbRepo = new DynamoDBRepository();
 
-export { marshall, unmarshall };
+export { marshall, unmarshall, QueryCommandInput, AttributeValue };

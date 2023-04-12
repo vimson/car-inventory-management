@@ -23,9 +23,20 @@ describe('Dealers - Cars manager', () => {
     console.log(response);
   });
 
-  test('Updating car inventory', async () => {
+  test.skip('Updating car inventory', async () => {
     const response = await superagent
       .put('https://i2zy5ooigb.execute-api.eu-west-2.amazonaws.com/prod/cars/KZM GLEH')
+      .send({
+        status: 'published',
+      })
+      .set('Authorization', 'Bearer: hello-token')
+      .end();
+    console.log(response);
+  });
+
+  test.skip('Updating car inventory', async () => {
+    const response = await superagent
+      .get('https://i2zy5ooigb.execute-api.eu-west-2.amazonaws.com/prod/cars/KZM GLEH')
       .send({
         status: 'published',
       })

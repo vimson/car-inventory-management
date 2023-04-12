@@ -1,15 +1,22 @@
 import { APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { errorHandler } from '../middlewares/error.middleware';
-import { carRequestSchema, carPutRequestSchema } from '../types/schema.types';
+import {
+  carRequestSchema,
+  carPutRequestSchema,
+  carSearchSchema,
+  CarSearchParams,
+} from '../types/schema.types';
 import { parseJson, buildResponse } from '../utils/generic.utils';
 import { CarsFactory } from '../factories/cars.factory';
 import { carsRepo } from '../repositories/cars.repo';
 
 // Get Cars from DB
 export const cars = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
-  console.log(event.queryStringParameters);
+  const searchParams: CarSearchParams | null = event.queryStringParameters;
+  carSearchSchema.parse(searchParams);
 
-  return buildResponse(200, []);
+  const result = await carsRepo.searchcars(searchParams);
+  return buildResponse(200, result);
 };
 
 export const carsHandler = errorHandler()(cars);

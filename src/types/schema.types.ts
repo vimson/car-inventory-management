@@ -32,16 +32,37 @@ const carPutRequestSchema = z.object({
   updatedAt: z.string().datetime().optional(),
 });
 
+const carSearchSchema = z.object({
+  regNumber: z.string().optional(),
+  dealer: z.string().optional(),
+  make: z.string().optional(),
+  model: z.string().optional(),
+  registeredAfter: z.coerce.date().optional(),
+  registeredBefore: z.coerce.date().optional(),
+  createdAfter: z.coerce.date().optional(),
+  createdBefore: z.coerce.date().optional(),
+  limit: z.number().lt(25).optional(),
+  nextPageOffset: z.string().optional(),
+  sortBy: z.enum(['asc', 'desc']).optional(),
+});
+
 type CarPostRequest = z.infer<typeof carRequestSchema>;
 
 type CarPutRequest = z.infer<typeof carPutRequestSchema>;
 
 type Car = Required<CarPostRequest>;
 
+type CarSearchParams = z.infer<typeof carSearchSchema>;
+
+type SearchResult = {
+  results?: Car[];
+  nextPageOffset?: string;
+};
+
 type EnvironmentVars = {
   [key: string]: string;
 };
 
-export { CarPostRequest, CarPutRequest, Car, EnvironmentVars };
+export { CarPostRequest, CarPutRequest, Car, CarSearchParams, EnvironmentVars, SearchResult };
 
-export { carRequestSchema, carPutRequestSchema };
+export { carRequestSchema, carPutRequestSchema, carSearchSchema };
