@@ -4,6 +4,7 @@ type ContextVariables = {
   account: string;
   region: string;
   apiVersion: string;
+  ddbTableName: string;
 };
 
 export { ContextVariables };

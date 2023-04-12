@@ -32,6 +32,6 @@ export class PipelineStack extends cdk.Stack {
       }),
     });
 
-    pipeline.addStage(new DefaultStage(this, `Deploy${contextVars.stackName}`, this.contextVars));
+    pipeline.addStage(new DefaultStage(this, `Deploy`, this.contextVars));
   }
 }
