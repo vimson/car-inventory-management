@@ -1,8 +1,76 @@
-# Welcome to your CDK TypeScript project
+# ClickDealer - Technical test
 
-This is a blank project for CDK development with TypeScript.
+## Assignment
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+Create a simple API using  AWS Lambda (Node/TypeScript) + AWS DynamoDb  OR Node/MongoDb to create then retrieve a vehicle record.  Be creative in what data is stored but we want to see the API allowing someone to save a vehicle record, then retrieve it from the database.  Consider validation and unit testing.The AWS free tier should make this a no cost process if available in your region.
+
+by vehicle record we simply mean a database entry about a vehicle i.e.
+
+Make: Ford
+
+Model FiestaReg: AB22 ABC
+
+RegistrationDate: 23/12/22Create/Read/ and possibly Update/Delete via an API.
+
+## Project Specification Document
+
+### Project title
+
+REST API Development using AWS CDK, TypeScript, AWS Serverless, API Gateway with Custom Authorizer and CI/CD Pipelines with DynamoDB data storage
+
+### Project Description
+
+The aim of this project is to develop a REST API for saving cars with various attributes. This API will be built using AWS CDK, TypeScript, AWS Serverless, API Gateway with Custom Authorizer and CI/CD Pipelines with DynamoDB data storage. The API will provide endpoints for GET, POST, PUT and DELETE operations.
+
+Zod is used for request validation and Jest as a testing library.
+
+### Car attributes
+
+The following attributes will be saved for each car:
+
+- Registration number
+- Dealer
+- Make
+- Model
+- Year
+- Color
+- Price
+- Mileage
+- Description
+- RegisteredAt
+- Status
+- UpdatedAt
+
+### DynamoDB table design:
+
+The following data access patterns will be considered while planning the API:
+
+1. Get car details by Registration number
+2. Get cars in the database in the order of created date
+3. Get cars of a particular dealer
+4. Get cars in the database of make and model
+5. Get cars which have registration date in a particular range
+6. Get cars which has make, model and price-wise sorting
+
+### Endpoints
+
+- GET /cars: Search cars we can provide dealer, make, model, registeredAfter, registeredBefore, limit, nextPageOffset, sortBy as parameters
+- GET /cars/{id}: Get a specific car details
+- POST /cars: Create a new car to the inventory
+- PUT /cars/{id}: Update an existing car inventory
+- DELETE /cars/{id}: Delete a specific car
+
+### API Gateway Custom Authorizer
+
+All endpoints except GET /cars are secured using the token **`xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`**. This token will be added as an Authorization header.
+
+### CI/CD Pipeline
+
+The CI/CD pipeline will be set up to automatically fetch the code from the CodeCommit repository and deploy it using AWS CDK.
+
+### Conclusion
+
+The REST API for car inventory management will be developed using AWS CDK, TypeScript, AWS Serverless, API Gateway with Custom Authorizer and CI/CD Pipelines. The API will provide various endpoints for GET, POST, PUT and DELETE operations to manage cars. The data will be stored in DynamoDB with proper data access patterns. The endpoints will be secured using a custom authorizer and CI/CD pipelines will be set up for automatic deployment.
 
 ## Useful commands
 
@@ -12,81 +80,3 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 - `cdk deploy` deploy this stack to your default AWS account/region
 - `cdk diff` compare deployed stack with current state
 - `cdk synth` emits the synthesized CloudFormation template
-
-## CDK express app deployment configuration
-
-https://aws.amazon.com/blogs/developer/increasing-development-speed-with-cdk-watch/
-
-1×× Informational
-
-100 Continue
-101 Switching Protocols
-102 Processing
-2×× Success
-
-200 OK
-201 Created
-202 Accepted
-203 Non-authoritative Information
-204 No Content
-205 Reset Content
-206 Partial Content
-207 Multi-Status
-208 Already Reported
-226 IM Used
-3×× Redirection
-
-300 Multiple Choices
-301 Moved Permanently
-302 Found
-303 See Other
-304 Not Modified
-305 Use Proxy
-307 Temporary Redirect
-308 Permanent Redirect
-4×× Client Error
-
-400 Bad Request
-401 Unauthorized
-402 Payment Required
-403 Forbidden
-404 Not Found
-405 Method Not Allowed
-406 Not Acceptable
-407 Proxy Authentication Required
-408 Request Timeout
-409 Conflict
-410 Gone
-411 Length Required
-412 Precondition Failed
-413 Payload Too Large
-414 Request-URI Too Long
-415 Unsupported Media Type
-416 Requested Range Not Satisfiable
-417 Expectation Failed
-418 I’m a teapot
-421 Misdirected Request
-422 Unprocessable Entity
-423 Locked
-424 Failed Dependency
-426 Upgrade Required
-428 Precondition Required
-429 Too Many Requests
-431 Request Header Fields Too Large
-444 Connection Closed Without Response
-451 Unavailable For Legal Reasons
-499 Client Closed Request
-5×× Server Error
-
-500 Internal Server Error
-501 Not Implemented
-502 Bad Gateway
-503 Service Unavailable
-504 Gateway Timeout
-505 HTTP Version Not Supported
-506 Variant Also Negotiates
-507 Insufficient Storage
-508 Loop Detected
-510 Not Extended
-511 Network Authentication Required
-599 Network Connect Timeout Error
