@@ -39,11 +39,10 @@ export class DealersStack extends cdk.Stack {
   getLambdas(stack: cdk.Stack): Record<string, NodejsFunction> {
     const lambdaEnvironment = {
       environment: this.contextVars.environment,
-      AWS_REGION: this.contextVars.awsRegion,
       DEALERS_TABLE: this.contextVars.ddbTableName,
     };
 
-    const carLambdas = new CarLambdas(stack, this.stackName);
+    const carLambdas = new CarLambdas(stack, this.stackName, lambdaEnvironment);
     const lambdas = {
       cars: carLambdas.cars(),
       createCar: carLambdas.createCar(),

@@ -21,4 +21,10 @@ type CarPostRequest = z.infer<typeof carRequestSchema>;
 
 type Car = Required<CarPostRequest>;
 
-export { CarPostRequest, Car, carRequestSchema };
+type EnvironmentVars = {
+  [key: string]: string;
+};
+
+export { CarPostRequest, Car, EnvironmentVars };
+
+export { carRequestSchema };

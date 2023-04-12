@@ -13,7 +13,7 @@ class DealerApiGateway {
       restApiName: `RestAPI${this.stackName}`,
     });
 
-    const carLambdas = new CarLambdas(stack, this.stackName);
+    const carLambdas = new CarLambdas(stack, this.stackName, {});
     this.restApi.root.addMethod('GET', new apigateway.LambdaIntegration(carLambdas.root()));
 
     const cars = this.restApi.root.addResource('cars');

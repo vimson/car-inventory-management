@@ -2,15 +2,16 @@ import * as path from 'path';
 import * as cdk from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import { EnvironmentVars } from '../../src/types/schema.types';
 
 class CarLambdas {
   private stack: cdk.Stack;
 
   private stackName: string;
 
-  private lambdaEnvironment: Record<string, string>;
+  private lambdaEnvironment: EnvironmentVars;
 
-  constructor(stack: cdk.Stack, stackName: string, environment: Record<string, string>) {
+  constructor(stack: cdk.Stack, stackName: string, environment: EnvironmentVars) {
     this.stack = stack;
     this.stackName = stackName;
     this.lambdaEnvironment = environment;
@@ -24,7 +25,7 @@ class CarLambdas {
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'rootHandler',
       entry: path.join(__dirname, `/../../src/handlers/root.handler.ts`),
-      environment: {},
+      environment: { ...this.lambdaEnvironment },
     });
   }
 
