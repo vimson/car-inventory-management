@@ -25,10 +25,10 @@ export class DealersStack extends cdk.Stack {
     this.contextVars = contextVars;
 
     this.dealersTable = new DDBTable(this.contextVars.ddbTableName).initialize(this);
-    this.dealersApi = new DealerApiGateway(this.contextVars.stackName).initialize(
-      this,
-      this.getLambdas(this)
-    );
+    this.dealersApi = new DealerApiGateway(
+      this.contextVars.stackName,
+      this.contextVars.token
+    ).initialize(this, this.getLambdas(this));
 
     new cdk.CfnOutput(this, `RestApiUrl${this.stackName}`, {
       value: this.dealersApi.url,
