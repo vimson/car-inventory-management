@@ -12,6 +12,7 @@ import {
   UpdateItemCommandOutput,
   AttributeValue,
 } from '@aws-sdk/client-dynamodb';
+import { ApiError } from '../../middlewares/error.middleware';
 
 class DynamoDBRepository {
   private ddbClient: DynamoDBClient;
@@ -41,8 +42,13 @@ class DynamoDBRepository {
   }
 
   async find(searchOptions: QueryCommandInput) {
-    const result = await this.ddbClient.send(new QueryCommand(searchOptions));
-    return result;
+    try {
+      const result = await this.ddbClient.send(new QueryCommand(searchOptions));
+      return result;
+    } catch (error) {
+      console.log(error);
+      throw new ApiError('Search params incomplete', 400);
+    }
   }
 
   async getItemByKey<T>(partitionKey: string, sortKey: string): Promise<T | null> {

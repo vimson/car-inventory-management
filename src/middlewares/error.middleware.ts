@@ -37,6 +37,9 @@ const errorHandler =
       }
 
       if (error instanceof ZodError) {
+        if (process.env.environment !== 'test') {
+          console.log(errorStack);
+        }
         return {
           statusCode: 400,
           body: JSON.stringify({ status: 'Bad request | validation_error', issues: error.issues }),

@@ -48,7 +48,9 @@ export const getCarHandler = errorHandler()(getCar);
 // Get Cars from DB
 export const cars = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult> => {
   const searchParams: CarSearchParams | null = event.queryStringParameters;
-  carSearchSchema.parse(searchParams);
+  if (searchParams) {
+    carSearchSchema.parse(searchParams);
+  }
 
   const result = await carsRepo.searchcars(searchParams);
   return buildResponse(200, result);

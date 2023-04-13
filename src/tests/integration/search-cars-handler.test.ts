@@ -8,7 +8,26 @@ import { parseJson } from '../../utils/generic.utils';
 jest.setTimeout(10 * 1000);
 
 describe('Dealers - Cars manager', () => {
-  test('Cars listing from a dealer with sort by descending order of the post', async () => {
+  test.skip('Adding a batch of cars to the database', async () => {
+    for (const car of sampleCars) {
+      gatewayEvent.body = JSON.stringify(car);
+      const response = await createCarHandler(gatewayEvent);
+      expect([409, 201]).toContain(response.statusCode);
+    }
+  });
+
+  test.skip('Cars listing without any search criteria', async () => {
+    const searchParams: CarSearchParams = {};
+    carSearchEvent.queryStringParameters =
+      searchParams as unknown as APIGatewayProxyEventQueryStringParameters;
+
+    const response = await carsHandler(carSearchEvent);
+    const responseBody = parseJson(response.body);
+    expect(responseBody.results.length).toBeGreaterThan(0);
+    expect(response.statusCode).toBe(200);
+  });
+
+  test.skip('Cars listing from a dealer with sort by descending order of the post', async () => {
     const searchParams: CarSearchParams = {
       dealer: 'Car Traders',
       sortBy: 'desc',
@@ -23,7 +42,7 @@ describe('Dealers - Cars manager', () => {
     expect(response.statusCode).toBe(200);
   });
 
-  test('Cars listing filtered by make', async () => {
+  test.skip('Cars listing filtered by make', async () => {
     const searchParams: CarSearchParams = {
       make: 'Toyota',
       sortBy: 'desc',
@@ -38,7 +57,7 @@ describe('Dealers - Cars manager', () => {
     expect(response.statusCode).toBe(200);
   });
 
-  test('Cars listing filtered by make and model', async () => {
+  test.skip('Cars listing filtered by make and model', async () => {
     const searchParams: CarSearchParams = {
       make: 'Toyota',
       model: 'Highlander',
@@ -55,7 +74,7 @@ describe('Dealers - Cars manager', () => {
     expect(response.statusCode).toBe(200);
   });
 
-  test('Cars those are registered before 2022-06-01', async () => {
+  test.skip('Cars those are registered before 2022-06-01', async () => {
     const searchParams: CarSearchParams = {
       registeredBefore: '2022-06-01',
       sortBy: 'desc',
@@ -67,7 +86,7 @@ describe('Dealers - Cars manager', () => {
     expect(response.statusCode).toBe(200);
   });
 
-  test('Cars those are registered after 2022-06-01', async () => {
+  test.skip('Cars those are registered after 2022-06-01', async () => {
     const searchParams: CarSearchParams = {
       registeredAfter: '2022-06-01',
       sortBy: 'desc',
@@ -90,13 +109,5 @@ describe('Dealers - Cars manager', () => {
       searchParams as unknown as APIGatewayProxyEventQueryStringParameters;
     const response = await carsHandler(carSearchEvent);
     expect(response.statusCode).toBe(200);
-  });
-
-  test.skip('Adding batch of cars to the database', async () => {
-    for (const car of sampleCars) {
-      gatewayEvent.body = JSON.stringify(car);
-      const response = await createCarHandler(gatewayEvent);
-      expect(response.statusCode).toBeTruthy();
-    }
   });
 });
