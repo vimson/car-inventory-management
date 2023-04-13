@@ -39,7 +39,7 @@
       "apiVersion": "v1",
       "awsRegion": "eu-west-2",
       "ddbTableName": "DealersDev",
-      "token": "9jnerlff23u8ed01np9g6ysbhsh0dvcs"
+      "token": ""
     },
     "production-environment": {
       "stackName": "DealersProduction",
@@ -49,7 +49,7 @@
       "apiVersion": "v1",
       "awsRegion": "eu-west-2",
       "ddbTableName": "Dealers",
-      "token": "9jnerlff23u8ed01np9g6ysbhsh0dvcs"
+      "token": ""
     }
   }
 }
